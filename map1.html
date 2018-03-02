@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        body,
+        html,
+        #container {
+            height: 100%;
+            margin: 0px;
+            font: 12px Helvetica, 'Hiragino Sans GB', 'Microsoft Yahei', '微软雅黑', Arial;
+        }
+
+        .info-title {
+            color: white;
+            font-size: 14px;
+            background-color: rgba(0, 155, 255, 0.8);
+            line-height: 26px;
+            padding: 0px 0 0 6px;
+            font-weight: lighter;
+            letter-spacing: 1px
+        }
+
+        .info-content {
+            padding: 4px;
+            color: #666666;
+            line-height: 23px;
+        }
+
+        .info-content img {
+            float: left;
+            margin: 3px;
+        }
+
+        #container {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="container"></div>
+    <script type="text/javascript" src="http://webapi.amap.com/maps?v=1.4.4&key=您申请的key值"></script>
+    <script>
+        var map = new AMap.Map('container', {
+            zoom: 10,
+            center: [116.39, 39.9] //new AMap.LngLat(116.39,39.9)
+        });
+
+        var marker = new AMap.Marker({
+            position: [116.480983, 39.989628], //marker所在的位置
+            map: map //创建时直接赋予map属性
+        });
+
+        AMap.plugin(['AMap.ToolBar', 'AMap.AdvancedInfoWindow'], function () {
+            //创建并添加工具条控件
+            var toolBar = new AMap.ToolBar();
+            map.addControl(toolBar);
+            //创建高级信息窗体并在指定位置打开
+            var infowindow = new AMap.AdvancedInfoWindow({
+                content: '<div class="info-title">高德地图</div><div class="info-content">' +
+                    '<img src="http://webapi.amap.com/images/amap.jpg">' +
+                    '高德是中国领先的数字地图内容、导航和位置服务解决方案提供商。<br>' +
+                    '<a target="_blank" href="http://mobile.amap.com/">点击下载高德地图</a></div>',
+                offset: new AMap.Pixel(0, -30)
+            });
+            infowindow.open(map, [116.480983, 39.989628]);
+        });
+        AMap.plugin(['AMap.Weather', 'AMap.AdvancedInfoWindow'], function(){
+            var weather = new AMap.Weather();
+            map.addControl(weather);
+            var infowindow = new AMap.AdvancedInfoWindow({
+                content: '<div class="info-title">高德地图</div><div class="info-content">' +
+                    '<img src="http://webapi.amap.com/images/amap.jpg">' +
+                    '高德是中国领先的数字地图内容、导航和位置服务解决方案提供商。<br>' +
+                    '<a target="_blank" href="http://mobile.amap.com/">点击下载高德地图</a></div>',
+                offset: new AMap.Pixel(0, -30)
+            });
+            infowindow.open(map, [116.480983, 39.989628]);
+        });
+
+        map.setCity('石家庄');
+    </script>
+</body>
+
+</html>
