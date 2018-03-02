@@ -72,6 +72,18 @@
         AMap.event.addListener(map, 'dragend', function (e) {
             alert('Hello AMap, Hello JS API.你当是拖地呢，还拖我！');
         });
+
+        // 添加工具条，控制地图的缩放、平移等
+        AMap.plugin('AMap.ToolBar', function () { //异步
+            var toolBar = new AMap.ToolBar();
+            map.addControl(toolBar);
+        });
+
+        // 添加比例尺
+        map.plugin('AMap.Scale', function() {
+            var scale = new AMap.Scale();
+            map.addControl(scale);
+        });
     </script>
 </body>
 
