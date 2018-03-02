@@ -84,6 +84,12 @@
             var scale = new AMap.Scale();
             map.addControl(scale);
         });
+
+        // 图层切换，用于几个常用图层切换显示
+        map.plugin('AMap.MapType', function(){
+            var mapType = new AMap.MapType();
+            map.addControl(mapType);
+        });
     </script>
 </body>
 
