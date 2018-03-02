@@ -27,6 +27,11 @@ AMap.plugin(['AMap.ToolBar', 'AMap.AdvancedInfoWindow'], function () {
 ```
 
 - 监听地图事件`dragend`停止拖拽地图时触发。如地图有拖拽缓动效果，则在拽停止，缓动开始前触发
+```
+AMap.event.addListener(map, 'dragend', function (e) {
+    alert('Hello AMap, Hello JS API.你当是拖地呢，还拖我！');
+});
+```
 
 - `zoomIn()`地图放大一级显示
 
