@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        body,
+        html,
+        #container {
+            height: 100%;
+            margin: 0px;
+            font: 12px Helvetica, 'Hiragino Sans GB', 'Microsoft Yahei', '微软雅黑', Arial;
+        }
+
+        .info-title {
+            color: white;
+            font-size: 14px;
+            background-color: rgba(0, 155, 255, 0.8);
+            line-height: 26px;
+            padding: 0px 0 0 6px;
+            font-weight: lighter;
+            letter-spacing: 1px
+        }
+
+        .info-content {
+            padding: 4px;
+            color: #666666;
+            line-height: 23px;
+        }
+
+        .info-content img {
+            float: left;
+            margin: 3px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="container"></div>
+    <div id="zoomIn" style="z-index:999;position:absolute;left:0;bottom: 120px;width: 60px;height:30px;background-color: #008CFF;color:#FFF;line-height:30px;text-align:center;border-radius:3px;cursor:pointer;">放大</div>
+    <div id="zoomOut" style="position:absolute;left:0;bottom: 60px;width: 60px;height:30px;background-color: #008CFF;color:#FFF;line-height:30px;text-align:center;border-radius:3px;cursor:pointer;">缩小</div>
+
+    <script type="text/javascript" src="http://webapi.amap.com/maps?v=1.4.4&key=f15f12a010d5138b783d606ef00a7649"></script>
+    <script>
+        var map = new AMap.Map('container');
+
+        var marker = new AMap.Marker({
+            position: [116.480983, 39.989628], //marker所在的位置
+            map: map, //创建时直接赋予map属性,
+            draggable: true, //设置点标记是否可拖拽移动，默认为false
+        });
+
+        // 设置点标记显示内容，可以是HTML要素字符串或者HTML DOM对象
+        marker.setContent(
+            '<div style="background-color:#0808E3;width:100px;height:100px;line-height:100px;border-radius:50px;text-align:center;color:#FFF;">1000</div>'
+        );
+
+
+        marker.setMap(map);
+
+        var center = new AMap.LngLat(116.397428, 39.90923);
+        for (var j = 0; j < 3; j += 1) {
+            var lnglat = new AMap.LngLat(center.getLng() + Math.random() * 0.1, center.getLat() + Math.random() * 0.1);
+            var marker = new AMap.Marker({
+                // 点标记在地图上显示的位置，默认为地图中心点
+                position: lnglat,
+                draggable: true,
+                // 设置拖拽点标记时是否开启点标记离开地图的效果
+                raiseOnDrag: true,
+                opacity: 1,
+                icon: 'http://webapi.amap.com/theme/v1.2/0.png'
+            });
+            marker.setMap(map);
+        }
+
+
+
+        // Polyline
+        var polyline = new AMap.Polyline({
+            // 线条颜色，使用16进制颜色代码赋值。默认值为#006600
+            strokeColor: '#000'
+        });
+
+        var arr = []; //经纬度坐标数组                 
+        arr.push(new AMap.LngLat(116.368904, 39.913423));
+        arr.push(new AMap.LngLat(116.382122, 39.901176));
+        arr.push(new AMap.LngLat(116.387271, 39.912501));
+        arr.push(new AMap.LngLat(116.398258, 39.904600));
+
+        polyline.setPath(arr);
+        polyline.setMap(map);
+
+        AMap.event.addListener(polyline, 'mouseover', function () {
+            alert('你很危险，触碰到了火线');
+        });
+    </script>
+</body>
+
+</html>

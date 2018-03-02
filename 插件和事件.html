@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        body,
+        html,
+        #container {
+            height: 100%;
+            margin: 0px;
+            font: 12px Helvetica, 'Hiragino Sans GB', 'Microsoft Yahei', '微软雅黑', Arial;
+        }
+
+        .info-title {
+            color: white;
+            font-size: 14px;
+            background-color: rgba(0, 155, 255, 0.8);
+            line-height: 26px;
+            padding: 0px 0 0 6px;
+            font-weight: lighter;
+            letter-spacing: 1px
+        }
+
+        .info-content {
+            padding: 4px;
+            color: #666666;
+            line-height: 23px;
+        }
+
+        .info-content img {
+            float: left;
+            margin: 3px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="container"></div>
+    <div id="zoomIn" style="z-index:999;position:absolute;left:0;bottom: 120px;width: 60px;height:30px;background-color: #008CFF;color:#FFF;line-height:30px;text-align:center;border-radius:3px;cursor:pointer;">放大</div>
+    <div id="zoomOut" style="position:absolute;left:0;bottom: 60px;width: 60px;height:30px;background-color: #008CFF;color:#FFF;line-height:30px;text-align:center;border-radius:3px;cursor:pointer;">缩小</div>
+
+    <script type="text/javascript" src="http://webapi.amap.com/maps?v=1.4.4&key=f15f12a010d5138b783d606ef00a7649"></script>
+    <script>
+        var map = new AMap.Map('container');
+
+        // setCity(city:String)设置查询城市，支持cityname（中文或中文全拼）、citycode、adcode
+        map.setCity('石家庄');
+
+        console.log(map.getCenter());
+
+        // 设置缩放级别
+        map.setZoom(13);
+
+        // 获取当前级别
+        console.log(map.getZoom());
+
+
+        // 放大地图
+        document.getElementById('zoomIn').addEventListener('click', (e) => {
+            map.zoomIn();
+        });
+
+        // 缩小地图
+        document.getElementById('zoomOut').addEventListener('click', e => {
+            map.zoomOut();
+        });
+
+        AMap.event.addListener(map, 'dragend', function (e) {
+            // alert('Hello AMap, Hello JS API.你当是拖地呢，还拖我！');
+        });
+
+        // 添加工具条，控制地图的缩放、平移等
+        AMap.plugin('AMap.ToolBar', function () { //异步
+            var toolBar = new AMap.ToolBar();
+            map.addControl(toolBar);
+        });
+
+        // 添加比例尺
+        map.plugin('AMap.Scale', function () {
+            var scale = new AMap.Scale();
+            map.addControl(scale);
+        });
+
+        // 图层切换，用于几个常用图层切换显示
+        map.plugin('AMap.MapType', function () {
+            var mapType = new AMap.MapType();
+            map.addControl(mapType);
+        });
+
+        // 鹰眼，显示缩略图
+        map.plugin('AMap.OverView', function () {
+            var overView = new AMap.OverView();
+            overView.open();
+            map.addControl(overView);
+        });
+
+        // 鼠标工具插件。通过该插件，可进行鼠标画标记点、线、多边形、矩形、圆、距离量测、面积量测、拉框放大、拉框缩小等功能。
+        // map.plugin(["AMap.MouseTool"], function () {
+        //     var mousetool = new AMap.MouseTool(map);
+        //     // mousetool.marker(); //使用鼠标工具，在地图上画标记点
+        //     mousetool.measureArea();
+        // });
+
+        //加载距离测量插件
+        map.plugin(["AMap.RangingTool"], function () {
+            var ruler = new AMap.RangingTool(map);
+            ruler.turnOn();
+        });
+
+
+    </script>
+</body>
+
+</html>

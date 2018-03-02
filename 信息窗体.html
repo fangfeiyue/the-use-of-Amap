@@ -47,48 +47,24 @@
     <script>
         var map = new AMap.Map('container');
 
-        // setCity(city:String)设置查询城市，支持cityname（中文或中文全拼）、citycode、adcode
-        map.setCity('石家庄');
-
-        console.log(map.getCenter());
-
-        // 设置缩放级别
-        map.setZoom(13);
-
-        // 获取当前级别
-        console.log(map.getZoom());
-
-
-        // 放大地图
-        document.getElementById('zoomIn').addEventListener('click', (e) => {
-            map.zoomIn();
+        var marker = new AMap.Marker({
+            position: [116.480983, 39.989628], //marker所在的位置
+            map: map, //创建时直接赋予map属性,
+            draggable: true, //设置点标记是否可拖拽移动，默认为false
         });
 
-        // 缩小地图
-        document.getElementById('zoomOut').addEventListener('click', e => {
-            map.zoomOut();
+
+
+        // nfoWindow类,用于在地图上弹出一个详细信息展示窗体，地图上只允许同时展示1个信息窗体
+        AMap.event.addListener(marker, 'click', function () {
+            info.open(map, [116.480983, 39.989628]);
         });
 
-        AMap.event.addListener(map, 'dragend', function (e) {
-            alert('Hello AMap, Hello JS API.你当是拖地呢，还拖我！');
-        });
-
-        // 添加工具条，控制地图的缩放、平移等
-        AMap.plugin('AMap.ToolBar', function () { //异步
-            var toolBar = new AMap.ToolBar();
-            map.addControl(toolBar);
-        });
-
-        // 添加比例尺
-        map.plugin('AMap.Scale', function() {
-            var scale = new AMap.Scale();
-            map.addControl(scale);
-        });
-
-        // 图层切换，用于几个常用图层切换显示
-        map.plugin('AMap.MapType', function(){
-            var mapType = new AMap.MapType();
-            map.addControl(mapType);
+        var info = new AMap.InfoWindow({
+            // 控制是否在鼠标点击地图后关闭信息窗体，默认false，鼠标点击地图后不关闭信息窗体
+            closeWhenClickMap: true,
+            // 显示内容，可以是HTML要素字符串或者HTMLElement对象，
+            content: '我是信息窗体',
         });
     </script>
 </body>
