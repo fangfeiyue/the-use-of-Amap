@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html style="width:100%;height:100%;">
+
+<head>
+    <meta charset="utf-8">
+    <title>JS API公开课</title>
+    <style>
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            font-family: "微软雅黑";
+        }
+
+        #map {
+            width: 100%;
+            height: 100%;
+        }
+
+        #show {
+            width: 400px;
+            height: 400px;
+            position: absolute;
+            z-index: 160;
+            background-color: #FFF;
+            top: 20%;
+            left: 20%;
+            border-radius: 5px;
+            opacity: 0.9;
+        }
+
+        .mar_top15 {
+            margin-top: 15px;
+        }
+
+        .item_num {
+            text-align: center;
+            color: #FFF;
+            margin-left: 20px;
+        }
+
+        .item_num:nth-child(1) {
+            background-color: #FF4400;
+            width: 70px;
+            border-radius: 35px;
+        }
+
+        .item_1 {
+            height: 70px;
+            line-height: 70px;
+        }
+
+        .item_num:nth-child(2) {
+            background-color: #FFCE00;
+            width: 60px;
+            border-radius: 30px;
+            margin-left: 25px;
+        }
+
+        .item_2 {
+            height: 60px;
+            line-height: 60px;
+        }
+
+        .item_num:nth-child(3) {
+            background-color: #E3FF00;
+            width: 50px;
+            border-radius: 25px;
+            margin-left: 30px;
+        }
+
+        .item_3 {
+            height: 50px;
+            line-height: 50px;
+        }
+
+        .item_num:nth-child(4) {
+            background-color: #00FF46;
+            width: 40px;
+            border-radius: 20px;
+            margin-left: 35px;
+        }
+
+        .item_4 {
+            height: 40px;
+            line-height: 40px;
+        }
+
+        .item_num:nth-child(5) {
+            background-color: #00FFDE;
+            width: 30px;
+            border-radius: 15px;
+            margin-left: 40px;
+        }
+
+        .item_5 {
+            height: 30px;
+            line-height: 30px;
+        }
+
+        .fl {
+            float: left;
+        }
+
+        .fr {
+            float: right;
+        }
+
+        #item_menu {
+            width: 100px;
+        }
+
+        #item_list {
+            width: 295px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="map"></div>
+    <div id="show">
+        <div id="item_menu" class="fl">
+            <div class="item_num item_1 mar_top15">1</div>
+            <div class="item_num item_2 mar_top15">2</div>
+            <div class="item_num item_3 mar_top15">3</div>
+            <div class="item_num item_4 mar_top15">4</div>
+            <div class="item_num item_5 mar_top15">5</div>
+        </div>
+        <div id="item_list" class="fr">
+
+        </div>
+    </div>
+    <script type="text/javascript" src="http://webapi.amap.com/maps?v=1.3&key=f15f12a010d5138b783d606ef00a7649"></script>
+    <script type="text/javascript">
+        var map = new AMap.Map('map');
+        var items = [];
+        map.setZoom(14);
+        map.plugin(['AMap.PlaceSearch'], function () {
+            var placeSearch = new AMap.PlaceSearch();
+            placeSearch.searchNearBy('餐厅', map.getCenter(), 3000);
+
+            AMap.event.addListener(placeSearch, 'complete', function (e) {
+                var poiList = e.poiList && e.poiList.pois;
+                var n = poiList.length > 5 ? 5 : poiList.length;
+
+                for (var i = 0; i < n; i++) {
+                    items.push(poiList[i]['name']);
+                }
+
+                new Render(items).showUI();
+            });
+
+            AMap.event.addListener(placeSearch, 'error', function (e) {
+            });
+        });
+
+        var Render = function (items) {
+            this.items = items;
+            this.list = document.getElementById('item_list');
+        };
+
+        Render.prototype = {
+            _addItem(data, i) {
+                var el = document.createElement('div');
+                el.className = 'mar_top15 item_' + i;
+                el.innerHTML = data;
+                this.list.appendChild(el);
+            },
+            showUI() {
+                for (var i = 0, n = (this.items.length > 5 ? 5 : this.items.length); i < n; i++) {
+                    this._addItem(this.items[i], i + 1);
+                }
+            }
+        };
+    </script>
+</body>
+
+</html>
