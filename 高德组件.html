@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    *{
+      border: none;
+    }
+    html, body {
+      width: 100%;
+      height: 100%;
+    }
+    iframe {
+      width: 100%;
+      height: 100%;
+    }
+  </style>
+</head>
+  <iframe id="test" src="https://m.amap.com/picker/?center=116.3972,39.9696&key=608d75903d29ad471362f8c58c550daf"></iframe>
+<body>
+  <script>
+    (function () {
+      var iframe = document.getElementById('test').contentWindow;
+      console.log(document.getElementById('test'));
+      document.getElementById('test').onload = function () {
+        iframe.postMessage('hi', 'https://m.amap.com/picker/');
+      };
+      window.addEventListener("message", function (e) {
+        console.log(e);
+        alert('您选择了:' + e.data.name + ',' + e.data.location)
+      }, false);
+    }())
+  </script>
+</body>
+
+</html>
