@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    html, body, #container {
+      width: 100%; 
+      height: 100%; 
+    }
+    body {
+      position: relative;
+    }
+    .zoomBox {
+      position: absolute;
+      bottom: 100px;
+      left: 0;
+      z-index: 99;
+    }
+    .zoomBox div {
+      height: 50px;
+      width: 40px;
+      text-align: center;
+      line-height: 40px;
+      background-color: orange;
+    }
+  </style>
+  <script type="text/javascript" src="https://webapi.amap.com/maps?v=1.4.8&key=f15f12a010d5138b783d606ef00a7649"></script>
+</head>
+<body>
+    <div class="zoomBox">
+      <div onclick="mapZoomOut()">缩小</div>
+      <div onclick="mapZoomIn()">放大</div>
+    </div>
+    <div id="container"></div> 
+    <script>
+      let zoomIn = 1;
+      let zoomOut = 18;
+      const map = new AMap.Map("container");
+      console.log(map.getCenter());
+      map.setCity("石家庄");
+      console.log(map.getZoom());
+
+      function mapZoomOut () {
+        map.zoomOut();
+      }
+      function mapZoomIn () {
+        map.zoomIn();
+      }
+
+      // AMap.event.addListener(map, 'dragend', function(){
+      //   alert('停止拖动地图了');
+      // });
+
+      // 方法
+      map.on('dragend', function() {
+        alert('停止拖动地图了');
+      });
+      // map.on('click', function() {
+      //   alert('点击了地图');
+      // })
+
+
+      // 插件
+      map.plugin(["AMap.Scale", "AMap.ToolBar", "AMap.MapType", "AMap.OverView", "AMap.MouseTool", "AMap.RangingTool"], function(){
+        // 地图比例尺插件
+        var scale = new AMap.Scale();
+        map.addControl(scale);
+        
+        // 地图工具条插件
+        var tool = new AMap.ToolBar();
+        map.addControl(tool);
+        
+        // 地图类型切换插件
+        var type = new AMap.MapType({
+          defaultType: 0, //使用2D地图
+          showTraffic: true,
+          showRoad: true
+        });
+        map.addControl(type);
+
+        // 地图鹰眼插件
+        var view = new AMap.OverView();
+        map.addControl(view);
+
+        // 鼠标工具插件。通过该插件，可进行鼠标画标记点、线、多边形、矩形、圆、距离量测、面积量测、拉框放大、拉框缩小等功能。
+        var mousetool = new AMap.MouseTool(map); 
+        // mousetool.marker(); //使用鼠标工具，在地图上画标记点
+        // mousetool.polyline();
+        mousetool.rule();
+        // mousetool.measureArea();
+
+        // 距离量测插件，提供更为丰富的样式设置功能。
+        var ruler = new AMap.RangingTool(map);
+      });
+
+
+    </script>
+</body>
+</html>
